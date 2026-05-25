@@ -16,18 +16,17 @@ Do declines in media freedom and civil society lead to worse health outcomes, ev
 Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) for download instructions.
 
 ## Repository Structure
-├── code/
-│   ├── 01_data_loading_and_merge.py
-│   ├── 02_visualizations.py
-│   └── 03_regression_analysis.py
-├── data/
-│   └── README.md
-├── output/
-│   ├── viz_backsliding.png
-│   ├── viz_residualized_scatter.png
-│   └── viz_spending_freedom.png
-├── .gitignore
-└── README.md
+
+- `code/` — Python scripts for data processing and analysis
+  - `01_data_loading_and_merge.py`
+  - `02_visualizations.py`
+  - `03_regression_analysis.py`
+- `data/` — Data download instructions (raw files too large for GitHub)
+  - `README.md`
+- `output/` — Generated figures
+  - `viz_backsliding.png`
+  - `viz_residualized_scatter.png`
+  - `viz_spending_freedom.png`
 
 ## Scripts
 
