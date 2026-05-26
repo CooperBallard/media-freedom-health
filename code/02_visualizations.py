@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objects as go
 
-#load data
-vdem = pd.read_csv("~/Desktop/QSS20-S26/public_data/V-Dem-CY-Full+Others-v16.csv", low_memory=False)
-wb = pd.read_csv("~/Desktop/QSS20-S26/public_data/healthdata.csv", skiprows=4)
+#load merged panel
+panel = pd.read_csv("../data/merged_panel.csv")
 
 #user-defined functions
 def classify_media_change(country_id, declined_list):
@@ -14,15 +13,10 @@ def classify_media_change(country_id, declined_list):
         return "Media freedom declined"
     return "Media freedom stable or improved"
 
-def compute_residuals(df, x_col, y_col):
-    """Regress y on x and return residuals."""
-    z = np.polyfit(df[x_col], df[y_col], 1)
-    return df[y_col] - np.poly1d(z)(df[x_col])
+#visualization 1: Backsliding trajectory
 
-#visualization 1: backsliding trajectory
-
-#subset V-Dem to 2000-2023 with the columns we need
-df = vdem[vdem["year"].between(2000, 2023)][
+#subset to 2000-2023 with the columns we need
+df = panel[panel["year"].between(2000, 2023)][
     ["country_name", "country_text_id", "year", "v2mecenefm", "e_pelifeex"]
 ].dropna().copy()
 
@@ -53,24 +47,28 @@ ax.set_title("Do Countries That Lose Media Freedom Fall Behind in Health?", font
 ax.legend(fontsize=10)
 ax.grid(True, alpha=0.3)
 plt.tight_layout()
-plt.savefig("viz_backsliding.png", dpi=200, bbox_inches="tight")
+plt.savefig("../output/backsliding.png", dpi=200, bbox_inches="tight")
 plt.show()
 
 #visualization 2: Faceted scatter: spending vs life expectancy by freedom
-#get most recent health expenditure (try 2022, fall back to 2021, then 2020)
-wb["health_exp"] = wb["2022"].fillna(wb["2021"]).fillna(wb["2020"])
-wb_clean = wb[["Country Code", "health_exp"]].rename(columns={"Country Code": "country_text_id"})
 
-#merge V-Dem governance data with World Bank spending data for 2023
-df3 = vdem[vdem["year"] == 2023][
+#get most recent health expenditure per country from the panel
+recent_health = panel.dropna(subset=["health_exp_pc_usd"]).sort_values("year", ascending=False)
+recent_health = recent_health.groupby("country_text_id").first().reset_index()
+recent_health = recent_health[["country_text_id", "health_exp_pc_usd"]].rename(
+    columns={"health_exp_pc_usd": "health_exp"})
+
+#merge with 2023 governance data from the panel
+df3 = panel[panel["year"] == 2023][
     ["country_text_id", "country_name", "v2x_freexp_altinf", "e_pelifeex"]
-].merge(wb_clean, on="country_text_id", how="left")
+].merge(recent_health, on="country_text_id", how="left")
 df3 = df3.dropna(subset=["health_exp", "e_pelifeex", "v2x_freexp_altinf"])
 df3 = df3[df3["health_exp"] > 0]
 
 #split countries into terciles of media freedom using pd.qcut
 df3["freedom_group"] = pd.qcut(df3["v2x_freexp_altinf"], 3,
     labels=["Low Media Freedom", "Medium Media Freedom", "High Media Freedom"])
+
 #create three side-by-side panels, one per freedom level
 fig, axes = plt.subplots(1, 3, figsize=(16, 6), sharey=True, sharex=True)
 colors = ["#e34a33", "#fdbb84", "#2c7fb8"]
@@ -101,16 +99,19 @@ for i, (group, color) in enumerate(zip(groups, colors)):
 axes[0].set_ylabel("Life Expectancy (years)", fontsize=11)
 fig.suptitle("Does Media Freedom Matter Beyond Health Spending?", fontsize=14, fontweight="bold")
 plt.tight_layout(rect=[0, 0.08, 1, 0.95])
-plt.savefig("viz_faceted_spending.png", dpi=200, bbox_inches="tight")
+plt.savefig("../output/scatterplot.png", dpi=200, bbox_inches="tight")
 plt.show()
 
-#visualization 3 Interactive Plotly choropleth map
-df4 = vdem[vdem["year"] == 2023][["country_text_id", "country_name",
+#visualization 3: Interactive Plotly choropleth map
+
+#get 2023 snapshot from the panel
+df4 = panel[panel["year"] == 2023][["country_text_id", "country_name",
     "v2x_freexp_altinf", "v2mecenefm", "v2csreprss", "e_pelifeex"]].dropna(
     subset=["v2x_freexp_altinf"]).copy()
 
-#build hover text using string concatenation
-hover = (df4["country_name"] +    "<br>Free Expression: " + df4["v2x_freexp_altinf"].round(2).astype(str) +
+#build hover text showing all metrics for each country
+hover = (df4["country_name"] +
+    "<br>Free Expression: " + df4["v2x_freexp_altinf"].round(2).astype(str) +
     "<br>Media Censorship: " + df4["v2mecenefm"].round(1).astype(str) +
     "<br>Civil Society: " + df4["v2csreprss"].round(1).astype(str) +
     "<br>Life Expectancy: " + df4["e_pelifeex"].round(1).astype(str) + " yrs")
@@ -143,6 +144,7 @@ for i, (col, label, *_) in enumerate(metrics):
     vis = [j == i for j in range(len(metrics))]
     buttons.append(dict(label=label, method="update",
         args=[{"visible": vis}, {"title": f"{label} Across Countries (2023)"}]))
+
 #configure map layout with dropdown menu
 fig.update_layout(
     updatemenus=[dict(buttons=buttons, direction="down",
@@ -154,5 +156,4 @@ fig.update_layout(
     margin=dict(t=120, b=10, l=10, r=10))
 
 #save as interactive HTML file
-fig.write_html("democracy_health_map.html")
-print("Saved interactive map to democracy_health_map.html")
+fig.write_html("../output/democracy_health_map.html")
