@@ -5,35 +5,21 @@ import statsmodels.formula.api as smf
 
 #user-defined function to extract regression results
 def get_coef_info(model, var_name):
+    """Extract coefficient, confidence interval, and p-value for a variable."""
     coef = model.params[var_name]
     ci = model.conf_int().loc[var_name]
     pval = model.pvalues[var_name]
     return {"coef": coef, "ci_low": ci[0], "ci_high": ci[1], "pval": pval}
-#load and merge data
 
-vdem = pd.read_csv("~/Desktop/QSS20-S26/public_data/V-Dem-CY-Full+Others-v16.csv", low_memory=False)
-wb = pd.read_csv("~/Desktop/QSS20-S26/public_data/healthdata.csv", skiprows=4)
-
-#reshape World Bank wide-to-long using list comprehension for year columns
-year_cols = [c for c in wb.columns if c.isdigit()]
-wb_long = wb.melt(id_vars=["Country Code"], value_vars=year_cols,
-                   var_name="year", value_name="health_exp")
-wb_long["year"] = wb_long["year"].astype(int)
-wb_long = wb_long.rename(columns={"Country Code": "country_text_id"})
-
-#merge V-Dem with World Bank
-df = vdem[vdem["year"].between(2000, 2023)][
-    ["country_text_id", "country_name", "year",
-     "v2x_freexp_altinf", "v2mecenefm", "v2csreprss",
-     "e_pelifeex", "e_gdppc", "e_wbgi_rle"]].copy()
-df = df.merge(wb_long, on=["country_text_id", "year"], how="left")
+#load merged panel from script 01
+panel = pd.read_csv("./data/merged_panel.csv")
 
 #apply lambda for log transforms
-df["log_gdppc"] = df["e_gdppc"].apply(lambda x: np.log(x) if x > 0 else np.nan)
-df["log_health_exp"] = df["health_exp"].apply(lambda x: np.log(x) if x > 0 else np.nan)
+panel["log_gdppc"] = panel["e_gdppc"].apply(lambda x: np.log(x) if x > 0 else np.nan)
+panel["log_health_exp"] = panel["health_exp_pc_usd"].apply(lambda x: np.log(x) if x > 0 else np.nan)
 
 #drop rows missing key regression variables
-df = df.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc", "log_health_exp"])
+df = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc", "log_health_exp"])
 print(f"Regression sample: {len(df)} country-years")
 
 #four OLS model specifications (clustered standard errors)
@@ -55,8 +41,7 @@ df_full = df.dropna(subset=["e_wbgi_rle", "v2csreprss"])
 m4 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + log_health_exp + e_wbgi_rle + v2csreprss",
     data=df_full).fit(cov_type="cluster", cov_kwds={"groups": df_full["country_text_id"]})
 
-#extract results using  function + list comprehension
-
+#extract results using function + list comprehension
 models = [m1, m2, m3, m4]
 labels = [
     "Media freedom alone",
@@ -72,6 +57,7 @@ results = [get_coef_info(m, "v2x_freexp_altinf") for m in models]
 for label, r in zip(labels, results):
     sig = "***" if r["pval"] < 0.01 else ("*" if r["pval"] < 0.1 else "ns")
     print(f"{label:45s}  coef={r['coef']:6.2f}  p={r['pval']:.3f}  {sig}")
+
 #coefficient dot plot
 fig, ax = plt.subplots(figsize=(10, 4.5))
 y_pos = list(range(len(models) - 1, -1, -1))
@@ -104,5 +90,5 @@ ax.set_title("Does Media Freedom Predict Life Expectancy\nAfter Ruling Out Alter
              fontsize=13, fontweight="bold")
 ax.grid(True, axis="x", alpha=0.2)
 plt.tight_layout()
-plt.savefig("viz_regression_dots.png", dpi=200, bbox_inches="tight")
+plt.savefig("../output/regression.png", dpi=200, bbox_inches="tight")
 plt.show()
