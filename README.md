@@ -24,9 +24,10 @@ Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) 
 - `data/` — Data download instructions (raw files too large for GitHub)
   - `README.md`
 - `output/` — Generated figures
-  - `viz_backsliding.png`
-  - `viz_residualized_scatter.png`
-  - `viz_spending_freedom.png`
+  - `backsliding.png`
+  - `scatterplot.png`
+  - `regression.png`
+  - `democracy_health_map.html`
 
 ## Scripts
 
