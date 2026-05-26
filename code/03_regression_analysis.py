@@ -12,7 +12,7 @@ def get_coef_info(model, var_name):
     return {"coef": coef, "ci_low": ci[0], "ci_high": ci[1], "pval": pval}
 
 #load merged panel from script 01
-panel = pd.read_csv("./data/merged_panel.csv")
+panel = pd.read_csv("../data/merged_panel.csv")
 
 #apply lambda for log transforms
 panel["log_gdppc"] = panel["e_gdppc"].apply(lambda x: np.log(x) if x > 0 else np.nan)
