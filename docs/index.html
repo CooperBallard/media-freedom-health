@@ -494,7 +494,7 @@
     </div>
   </section>
 
-  <!-- FINDING 1: Backsliding Trajectory -->
+  <!-- FINDING 1: Cross-Country Correlation -->
   <section id="finding1">
     <div class="section-label"><span class="dot"></span> Findings</div>
     <h2>Findings</h2>
@@ -514,26 +514,25 @@
           The tempting conclusion writes itself: a free press must be saving lives, so the press deserves the credit.
         </p>
         <p>
-          But that conclusion is too quick. The descriptive plot below offers a first hint of why.
-          It splits countries into low, medium, and high media freedom groups, and within each group
-          plots health spending against life expectancy. In all three groups, life expectancy rises
-          strongly with health spending, and the panels look broadly similar to one another.
+          The plot below shows that relationship directly. Each dot is a country: those with the
+          freest presses (in blue) sit noticeably higher than those with the least (in gray), and the
+          freest third of countries average about eight more years of life than the least-free third.
         </p>
         <p>
-          That pattern suggests the raw 8.2-year gap may partly reflect the fact that freer countries
-          are also wealthier and spend more on health, rather than press freedom itself. This is only
-          suggestive. The formal test comes in Finding 02, where adding wealth as a control directly
-          shrinks the media freedom effect.
+          But a raw gap like this is easy to misread. Countries with freer presses also tend to be
+          wealthier, more democratic, and to spend more on health, and each of those independently
+          improves life expectancy. The rest of this project stress-tests the gap to see how much of
+          it, if any, survives once those factors are accounted for. The formal test begins in
+          Finding 02, where adding wealth as a control directly shrinks the media freedom effect.
         </p>
       </div>
       <div class="viz-wrap">
-        <img src="viz_faceted_spending.png"
-             alt="Faceted scatter: health spending vs life expectancy within low, medium, and high media freedom groups" />
+        <img src="viz_raw_gap.png"
+             alt="Scatter of media freedom versus life expectancy by country, with a roughly eight-year gap between the freest and least-free presses" />
         <div class="viz-caption">
-          Figure 1. Life expectancy rises with health spending within low, medium, and high media
-          freedom groups. The similar pattern across panels is a descriptive hint that the raw
-          media-freedom gap may partly reflect wealth and health spending, which the regression
-          models in Finding 02 test directly.
+          Figure 1. Countries with freer press live about eight years longer in the raw comparison.
+          This descriptive relationship is striking, but it does not account for wealth, health
+          spending, or broader democratic governance.
         </div>
       </div>
     </div>
@@ -588,25 +587,25 @@
           independent press freedom signal is weak.
         </p>
         <p>
-          A simple plot of the <em>change</em> in press freedom against the <em>change</em> in life
-          expectancy tells the same story: the relationship is essentially flat (correlation = 0.07).
-          Life expectancy has risen almost everywhere regardless of what happened to press freedom.
+          There is also a deeper, structural problem. Press freedom and overall democracy are correlated
+          at about 0.90, because press freedom is one component of the broader democracy index. As the
+          plot below shows, the two move almost in lockstep: a country that scores high on one scores
+          high on the other. They are empirically inseparable, so press freedom cannot be isolated as a
+          predictor distinct from the democratic system it belongs to.
         </p>
         <p>
-          There is also a deeper problem. Press freedom and overall democracy are correlated at 0.90,
-          because press freedom is one component of the broader democracy index. The two are empirically
-          inseparable, so press freedom cannot be isolated as a predictor distinct from the democratic
-          system it belongs to. The question then becomes which measure holds up on its own, and that is
-          the subject of Finding 04.
+          The question then becomes which measure holds up on its own, and that is the subject of
+          Finding 04.
         </p>
       </div>
       <div class="viz-wrap">
-        <img src="viz_delta_scatter.png"
-             alt="Scatter plot of change in media freedom vs change in life expectancy, showing near-zero correlation" />
+        <img src="viz_freedom_democracy.png"
+             alt="Scatter of media freedom versus electoral democracy by country, points hugging a line at r about 0.90" />
         <div class="viz-caption">
-          Figure 3. Change in press freedom versus change in life expectancy across countries. The
-          relationship is essentially flat (correlation = 0.07): life expectancy rose almost everywhere
-          regardless of what happened to press freedom.
+          Figure 3. Press freedom and democracy are nearly inseparable in the data. Countries with high
+          media freedom also tend to score high on overall democracy. This makes it difficult to
+          interpret press freedom as an isolated institutional predictor rather than part of a broader
+          democratic-governance package.
         </div>
       </div>
     </div>
