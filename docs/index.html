@@ -4,20 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Media Freedom and Population Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ─── Reset & Base ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --surface2:  #1e2530;
-      --border:    #30363d;
-      --accent:    #58a6ff;
-      --accent2:   #3fb950;
-      --warn:      #f78166;
-      --text:      #e6edf3;
-      --muted:     #8b949e;
+      --bg:        #f4f1ea;
+      --surface:   #fcfaf5;
+      --surface2:  #efe9dd;
+      --border:    #ddd5c5;
+      --accent:    #1c6b63;
+      --accent2:   #2f6d49;
+      --warn:      #963a28;
+      --text:      #211f1b;
+      --muted:     #6a655b;
       --max-w:     900px;
     }
 
@@ -26,7 +29,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Hanken Grotesk', system-ui, sans-serif;
       font-size: 17px;
       line-height: 1.7;
     }
@@ -36,7 +39,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(13, 17, 23, 0.85);
+      background: rgba(244, 241, 234, 0.85);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
@@ -75,8 +78,7 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(88,166,255,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 30% at 80% 60%, rgba(63,185,80,0.07) 0%, transparent 60%);
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(28,107,99,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -87,27 +89,25 @@
       text-transform: uppercase;
       font-weight: 700;
       color: var(--accent);
-      background: rgba(88,166,255,0.12);
-      border: 1px solid rgba(88,166,255,0.25);
+      background: rgba(28,107,99,0.10);
+      border: 1px solid rgba(28,107,99,0.28);
       border-radius: 20px;
       padding: 0.3rem 0.9rem;
       margin-bottom: 1.8rem;
     }
 
     h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 800;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 600;
       line-height: 1.15;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       max-width: 760px;
       margin: 0 auto 1.5rem;
     }
     h1 em {
       font-style: normal;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .byline {
@@ -129,8 +129,9 @@
     }
     .stat-num {
       display: block;
-      font-size: 2rem;
-      font-weight: 800;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: 2.2rem;
+      font-weight: 600;
       color: var(--accent);
       line-height: 1;
     }
@@ -180,10 +181,11 @@
     }
 
     h2 {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 1.2;
       margin-bottom: 1rem;
     }
 
@@ -272,8 +274,9 @@
       margin-bottom: 0.4rem;
     }
     .finding h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
       line-height: 1.3;
       margin-bottom: 0.6rem;
     }
@@ -294,10 +297,10 @@
       margin-right: 0.4rem;
       margin-bottom: 0.4rem;
     }
-    .chip-blue  { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
-    .chip-green { background: rgba(63,185,80,0.15);  color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
-    .chip-red   { background: rgba(247,129,102,0.15); color: var(--warn); border: 1px solid rgba(247,129,102,0.3); }
-    .chip-muted { background: rgba(139,148,158,0.15); color: var(--muted); border: 1px solid rgba(139,148,158,0.3); }
+    .chip-blue  { background: rgba(28,107,99,0.12);  color: var(--accent);  border: 1px solid rgba(28,107,99,0.30); }
+    .chip-green { background: rgba(47,109,73,0.12);   color: var(--accent2); border: 1px solid rgba(47,109,73,0.30); }
+    .chip-red   { background: rgba(150,58,40,0.12);   color: var(--warn);    border: 1px solid rgba(150,58,40,0.30); }
+    .chip-muted { background: rgba(106,101,91,0.14);  color: var(--muted);   border: 1px solid rgba(106,101,91,0.30); }
 
     /* ─── Viz container ─────────────────────────────────────────────── */
     .viz-wrap {
@@ -324,8 +327,8 @@
     /* ─── Takeaway ──────────────────────────────────────────────────── */
     .takeaway {
       margin-top: 5rem;
-      background: linear-gradient(135deg, rgba(88,166,255,0.08) 0%, rgba(63,185,80,0.05) 100%);
-      border: 1px solid rgba(88,166,255,0.2);
+      background: linear-gradient(135deg, rgba(28,107,99,0.07) 0%, rgba(47,109,73,0.04) 100%);
+      border: 1px solid rgba(28,107,99,0.20);
       border-radius: 16px;
       padding: 3rem 2.5rem;
       text-align: center;
@@ -339,11 +342,12 @@
       pointer-events: none;
     }
     .takeaway blockquote {
-      font-size: clamp(1.2rem, 2.5vw, 1.65rem);
-      font-weight: 700;
-      line-height: 1.4;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 600;
+      line-height: 1.35;
       color: var(--text);
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
       max-width: 680px;
       margin: 0 auto 1.2rem;
       position: relative;
@@ -378,7 +382,7 @@
     }
     .gh-link:hover {
       border-color: var(--accent);
-      background: rgba(88,166,255,0.06);
+      background: rgba(28,107,99,0.06);
       color: var(--accent);
     }
     .gh-link svg { flex-shrink: 0; }
@@ -415,9 +419,9 @@
 
 <!-- ── Hero ─────────────────────────────────────────────────────────── -->
 <header>
-  <div class="eyebrow">QSS 20 &nbsp;·&nbsp; Final Project</div>
+  <div class="eyebrow">QSS 20 Final Project</div>
   <h1><em>Media Freedom</em> and Population Health</h1>
-  <p class="byline"><strong>Cooper Ballard</strong> &nbsp;·&nbsp; Dartmouth College</p>
+  <p class="byline"><strong>Cooper Ballard</strong>, Dartmouth College</p>
 
   <div class="hero-stats">
     <div class="stat">
@@ -447,7 +451,6 @@
 
   <!-- QUESTION -->
   <section id="question">
-    <div class="section-label"><span class="dot"></span> Research Question</div>
     <h2>The Question</h2>
     <p>Countries with free press tend to live longer. But is that because media freedom itself improves health, or because press freedom travels with other things, like wealth and democracy, that improve health?</p>
     <div class="question-block">
@@ -464,8 +467,7 @@
 
   <!-- DATA -->
   <section id="data">
-    <div class="section-label"><span class="dot"></span> Data &amp; Methods</div>
-    <h2>Data</h2>
+    <h2>Data and Methods</h2>
     <p>
       Two major cross-national datasets were merged at the country-year level and cleaned into a
       country-year panel suitable for cross-country and panel regression.
@@ -496,13 +498,12 @@
 
   <!-- FINDING 1: Cross-Country Correlation -->
   <section id="finding1">
-    <div class="section-label"><span class="dot"></span> Findings</div>
     <h2>Findings</h2>
 
   <!-- FINDING 1: Cross-Country Correlation -->
     <div class="finding">
       <div class="finding-header">
-        <div class="finding-num">Finding 01 &nbsp;·&nbsp; Cross-Country Correlation</div>
+        <div class="finding-num">Finding 01: Cross-Country Correlation</div>
         <h3>The 8.2-year gap is mostly driven by wealth</h3>
         <span class="result-chip chip-blue">8.2 yr raw gap</span>
         <span class="result-chip chip-red">Wealth confounded</span>
@@ -510,8 +511,7 @@
       <div class="finding-body">
         <p>
           In a simple cross-country comparison, countries with the most media freedom
-          live <strong>8.2 years longer</strong> on average than countries with the least. That's a striking number.
-          The tempting conclusion writes itself: a free press must be saving lives, so the press deserves the credit.
+          live <strong>8.2 years longer</strong> on average than countries with the least. It is a large difference, and the intuitive reading is that a free press must itself be improving health.
         </p>
         <p>
           The plot below shows that relationship directly. Each dot is a country: those with the
@@ -542,7 +542,7 @@
   <section id="finding2">
     <div class="finding">
       <div class="finding-header">
-        <div class="finding-num">Finding 02 &nbsp;·&nbsp; Progressive Controls</div>
+        <div class="finding-num">Finding 02: Progressive Controls</div>
         <h3>The effect of media freedom shrinks as controls are added</h3>
         <span class="result-chip chip-blue">8.2 to 1.1 years</span>
         <span class="result-chip chip-red">Confounding</span>
@@ -574,7 +574,7 @@
   <section id="finding3">
     <div class="finding">
       <div class="finding-header">
-        <div class="finding-num">Finding 03 &nbsp;·&nbsp; Press Freedom Has No Robust Independent Signal</div>
+        <div class="finding-num">Finding 03: Press Freedom Has No Robust Independent Signal</div>
         <h3>On its own, press freedom barely registers, and it cannot be separated from democracy</h3>
         <span class="result-chip chip-muted">Marginal at best</span>
         <span class="result-chip chip-blue">r = 0.90 with democracy</span>
@@ -615,7 +615,7 @@
   <section id="finding4">
     <div class="finding">
       <div class="finding-header">
-        <div class="finding-num">Finding 04 &nbsp;·&nbsp; The Signal That Survives Is Democracy</div>
+        <div class="finding-num">Finding 04: The Signal That Survives Is Democracy</div>
         <h3>Democracy is the institutional factor that holds up</h3>
         <span class="result-chip chip-green">~4.7 years, p = 0.02</span>
         <span class="result-chip chip-blue">Robust</span>
@@ -629,10 +629,7 @@
           controls (p = 0.02).</strong>
         </p>
         <p>
-          This is the heart of the story. The narrow measure, press freedom, does not carry an
-          independent signal. The broad measure, democracy, does, and it survives a demanding set of
-          controls. Press freedom looked important only because it travels with the broader democratic
-          system, and it is that system, not the press alone, that tracks with population health.
+          Taken together, these results point to democracy, rather than press freedom, as the institutional factor associated with population health. Once press freedom is separated from the broader system it carries little independent signal, whereas democracy holds up across a demanding set of controls. Press freedom appears to matter largely because it travels with democratic governance, and it is that wider system, rather than the press alone, that tracks with how long people live.
         </p>
         <p style="color:var(--muted);font-size:0.9rem;">
           These are cross-country associations, so they cannot rule out unobserved differences between
@@ -655,7 +652,6 @@
   </section>
 
   <section id="map" style="margin-top: 3rem; text-align: center;">
-    <div class="section-label" style="justify-content:center;"><span class="dot"></span> Interactive Map</div>
     <h2>Explore the Data</h2>
     <p>Toggle between media freedom, life expectancy, censorship, and civil society scores across 173 countries.</p>
     <a href="democracy_health_map.html" target="_blank" rel="noopener"
@@ -669,21 +665,11 @@
   <!-- TAKEAWAY -->
   <section id="takeaway">
     <div class="takeaway">
-      <div class="section-label" style="justify-content:center;margin-bottom:1rem;">
-        <span class="dot"></span> Key Takeaway
-      </div>
       <blockquote>
-        The free press gets the credit, but democracy does the work.
+        Once wealth and democracy are taken into account, it is democratic governance, rather than press freedom on its own, that tracks with how long people live.
       </blockquote>
       <p class="subtext">
-        The headline correlation is striking: countries with a free press live about 8 years longer.
-        But it does not survive scrutiny. Most of the gap is wealth. On its own, press freedom is only
-        marginal, and because it is one component of democracy, it cannot be separated from the broader
-        democratic system. What does hold up is democracy itself: across countries, democratic governance
-        is associated with about 4.7 more years of life expectancy, even after controlling for wealth, rule of law,
-        and corruption. Press freedom looks more like a marker than a standalone mechanism. The lesson is that
-        population health tracks with the whole democratic package, not with press freedom as an isolated
-        lever.
+        The raw correlation is striking, with freer-press countries living about eight years longer, but most of that gap reflects differences in wealth rather than the press itself. On its own, press freedom is only marginally associated with life expectancy, and because it is one component of the broader democracy index, it cannot be cleanly separated from the democratic system it belongs to. What does hold up across countries is democracy itself, which is associated with about 4.7 more years of life expectancy even after accounting for wealth, rule of law, and corruption. Press freedom appears to be more a marker of that broader democratic system than an independent driver of population health.
       </p>
     </div>
   </section>
@@ -714,7 +700,7 @@
     View Code on GitHub
   </a>
   <div class="footer-meta">
-    QSS 20 Final Project &nbsp;·&nbsp; Cooper Ballard &nbsp;·&nbsp; Dartmouth College &nbsp;·&nbsp; 2026
+    QSS 20 Final Project, Cooper Ballard, Dartmouth College, 2026
   </div>
 </footer>
 
