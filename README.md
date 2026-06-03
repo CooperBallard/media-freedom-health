@@ -21,6 +21,7 @@ Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) 
   - `01_data_loading_and_merge.py`
   - `02_visualizations.py`
   - `03_regression_analysis.py`
+  - `04_summary_statistcs.py`
 - `data/` — Data download instructions (raw files too large for GitHub)
   - `README.md`
 - `output/` — Generated figures
