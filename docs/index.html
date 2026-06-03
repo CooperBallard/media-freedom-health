@@ -425,7 +425,7 @@
 
   <div class="hero-stats">
     <div class="stat">
-      <span class="stat-num">173</span>
+      <span class="stat-num">170+</span>
       <span class="stat-label">Countries</span>
     </div>
     <div class="divider"></div>
@@ -476,7 +476,7 @@
       <div class="data-pill">
         <span class="pill-icon">🗺️</span>
         <div class="pill-title">Coverage</div>
-        <div class="pill-value">173 countries, 2000–2023</div>
+        <div class="pill-value">170+ countries, 2000–2023</div>
       </div>
       <div class="data-pill">
         <span class="pill-icon">📰</span>
@@ -549,9 +549,11 @@
       </div>
       <div class="finding-body">
         <p>
-          Four regression models were run, each adding another factor to account for.
-          <strong>The media freedom effect drops from 8.2 years to just 1.1 years</strong>
-          (and is no longer statistically significant) once wealth and health spending are included.
+          Four regression models were run, each adding another control.
+          <strong>Media freedom's apparent effect falls from about 8.2 years on its own to roughly
+          2.8 years once wealth is accounted for</strong>, already no longer statistically significant, and
+          it keeps shrinking as health spending, rule of law, and civil society repression are added,
+          down to about 1.1 years in the full model.
         </p>
         <p>
           This confirms the pattern from the scatter plots: the raw association between media freedom and
@@ -563,8 +565,9 @@
         <img src="viz_regression_dots.png"
              alt="Coefficient plot showing media freedom effect shrinking as controls are added" />
         <div class="viz-caption">
-          Figure 2. Each row adds a control variable. The effect of media freedom shrinks from
-          8.2 years to 1.1 as wealth and spending are accounted for. Blue = significant, gray = not significant.
+          Figure 2. Each row adds a control. Media freedom's effect falls from 8.2 years to about
+          1.1 across the full set of controls, and is already only marginal (about 2.8 years) once
+          wealth is included. Blue = marginally significant, gray = not significant.
         </div>
       </div>
     </div>
@@ -653,7 +656,7 @@
 
   <section id="map" style="margin-top: 3rem; text-align: center;">
     <h2>Explore the Data</h2>
-    <p>Toggle between media freedom, life expectancy, censorship, and civil society scores across 173 countries.</p>
+    <p>Toggle between media freedom, life expectancy, censorship, and civil society scores across 170+ countries.</p>
     <a href="democracy_health_map.html" target="_blank" rel="noopener"
        style="display:inline-flex; align-items:center; gap:0.6rem; background:var(--surface); border:1px solid var(--border);
               border-radius:10px; padding:0.85rem 1.6rem; color:var(--text); text-decoration:none; font-weight:600;
