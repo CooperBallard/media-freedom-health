@@ -36,6 +36,7 @@ Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) 
 1. **`01_data_loading_and_merge.py`** — Loads V-Dem and World Bank health expenditure data, merges into a country-year panel (2000–2023), recodes zero life-expectancy values as missing, and log-transforms GDP and health spending.
 2. **`02_visualizations.py`** — Produces the four figures: the raw media-freedom vs life-expectancy gap, the progressive-controls coefficient plot, the media-freedom vs democracy scatter (r ≈ 0.90), and the cross-country contrast of press freedom vs democracy.
 3. **`03_regression_analysis.py`** — Runs cross-country regressions with standard errors clustered by country: the progressive-controls sequence for media freedom, and the democracy specifications adding wealth, rule of law, and control of corruption. Also estimates within-country fixed-effects models as a sensitivity check.
+4. **`04_summary_statistics.py`** — Builds Table 1: summary statistics (N, mean, standard deviation, min, and max) for the key variables, and reports panel coverage diagnostics (row and country counts, year span, and health-spending coverage). Saves `summary_statistics.csv`.
 
 ## Findings
 
