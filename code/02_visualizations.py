@@ -36,7 +36,7 @@ if "log_health_exp" not in panel.columns:
  
 #helper used by the dot plot and the forest plot
 def get_coef_info(model, var_name):
-    """Extract coefficient, confidence interval, and p-value for a variable."""
+    #extract coefficient, confidence interval, and p-value for a variable
     coef = model.params[var_name]
     ci_low, ci_high = model.conf_int().loc[var_name]
     pval = model.pvalues[var_name]
