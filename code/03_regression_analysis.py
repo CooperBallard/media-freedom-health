@@ -3,19 +3,8 @@ import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
  
-#full path to your merged_panel.csv
+#full path to your merged_panel.csv (it lives in public_data, not data)
 PANEL = "/Users/cooperballard/Desktop/QSS20-S26/public_data/merged_panel.csv"
- 
-#if that path is not found, search a few common folders and use the first match
-if not os.path.exists(PANEL):
-    for base in [os.path.expanduser("~/Desktop"), os.path.expanduser("~/Documents"),
-                 os.getcwd(), os.path.expanduser("~")]:
-        hits = [os.path.join(r, "merged_panel.csv") for r, _, fs in os.walk(base)
-                if "merged_panel.csv" in fs]
-        if hits:
-            PANEL = hits[0]
-            print("found panel at:", PANEL)
-            break
  
 #load merged panel from the merging script (script 01)
 panel = pd.read_csv(PANEL)
@@ -30,28 +19,35 @@ if "log_gdppc" not in panel.columns:
 #0 is a missing placeholder for life expectancy, not a real value
 panel.loc[panel["e_pelifeex"] == 0, "e_pelifeex"] = np.nan
  
-#fit one model on its own complete-case sample
-#we only drop rows for variables this model actually uses, so simpler models keep more rows
-def fit(key, controls):
-    rhs = [key] + controls
-    sub = panel.dropna(subset=["e_pelifeex"] + rhs).copy()   #complete cases for THIS model
-    formula = "e_pelifeex ~ " + " + ".join(rhs) + " + C(year)"
-    m = smf.ols(formula, data=sub).fit(                      #cluster groups come from the same subset
-        cov_type="cluster", cov_kwds={"groups": sub["country_text_id"]})
-    return m, key
- 
 #cross-country press freedom models (year FE, clustered by country)
-for label, ctrls in [("Press freedom alone",        []),
-                     ("+ wealth",                   ["log_gdppc"]),
-                     ("+ rule of law & corruption", ["log_gdppc", "e_wbgi_rle", "e_wbgi_cce"])]:
-    m, key = fit("v2x_freexp_altinf", ctrls)
-    print(f"{label:28s} coef={m.params[key]:.3f}, p={m.pvalues[key]:.4f}, n={int(m.nobs)}")
+#each model drops only on the variables IT uses, so simpler models keep more rows (matches the paper)
+f1d = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf"]).copy()
+f1 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + C(year)", data=f1d).fit(
+    cov_type="cluster", cov_kwds={"groups": f1d["country_text_id"]})
+print(f"Press freedom alone:        coef={f1.params['v2x_freexp_altinf']:.3f}, p={f1.pvalues['v2x_freexp_altinf']:.4f}, n={int(f1.nobs)}")
  
-print()
+f2d = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc"]).copy()
+f2 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + C(year)", data=f2d).fit(
+    cov_type="cluster", cov_kwds={"groups": f2d["country_text_id"]})
+print(f"+ wealth:                   coef={f2.params['v2x_freexp_altinf']:.3f}, p={f2.pvalues['v2x_freexp_altinf']:.4f}, n={int(f2.nobs)}")
+ 
+f3d = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc", "e_wbgi_rle", "e_wbgi_cce"]).copy()
+f3 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + e_wbgi_rle + e_wbgi_cce + C(year)", data=f3d).fit(
+    cov_type="cluster", cov_kwds={"groups": f3d["country_text_id"]})
+print(f"+ rule of law & corruption: coef={f3.params['v2x_freexp_altinf']:.3f}, p={f3.pvalues['v2x_freexp_altinf']:.4f}, n={int(f3.nobs)}")
  
 #cross-country democracy models (main result; year FE, clustered by country)
-for label, ctrls in [("Democracy alone",            []),
-                     ("+ wealth",                   ["log_gdppc"]),
-                     ("+ rule of law & corruption", ["log_gdppc", "e_wbgi_rle", "e_wbgi_cce"])]:
-    m, key = fit("v2x_polyarchy", ctrls)
-    print(f"{label:28s} coef={m.params[key]:.3f}, p={m.pvalues[key]:.4f}, n={int(m.nobs)}")
+p1d = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy"]).copy()
+p1 = smf.ols("e_pelifeex ~ v2x_polyarchy + C(year)", data=p1d).fit(
+    cov_type="cluster", cov_kwds={"groups": p1d["country_text_id"]})
+print(f"\nDemocracy alone:            coef={p1.params['v2x_polyarchy']:.3f}, p={p1.pvalues['v2x_polyarchy']:.4f}, n={int(p1.nobs)}")
+ 
+p2d = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy", "log_gdppc"]).copy()
+p2 = smf.ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + C(year)", data=p2d).fit(
+    cov_type="cluster", cov_kwds={"groups": p2d["country_text_id"]})
+print(f"+ wealth:                   coef={p2.params['v2x_polyarchy']:.3f}, p={p2.pvalues['v2x_polyarchy']:.4f}, n={int(p2.nobs)}")
+ 
+p3d = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy", "log_gdppc", "e_wbgi_rle", "e_wbgi_cce"]).copy()
+p3 = smf.ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + e_wbgi_rle + e_wbgi_cce + C(year)", data=p3d).fit(
+    cov_type="cluster", cov_kwds={"groups": p3d["country_text_id"]})
+print(f"+ rule of law & corruption: coef={p3.params['v2x_polyarchy']:.3f}, p={p3.pvalues['v2x_polyarchy']:.4f}, n={int(p3.nobs)}")
