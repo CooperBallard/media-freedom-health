@@ -49,6 +49,6 @@ fig.update_layout(
     title=dict(text="Freedom of Expression Across Countries (2023)", x=0.5, y=0.98),
     margin=dict(t=120, b=10, l=10, r=10))
  
-os.makedirs("docs", exist_ok=True)
-fig.write_html("docs/democracy_health_map.html")
-print("saved docs/democracy_health_map.html")
+os.makedirs("../docs", exist_ok=True)
+fig.write_html("../docs/democracy_health_map.html")
+print("saved ../docs/democracy_health_map.html")
