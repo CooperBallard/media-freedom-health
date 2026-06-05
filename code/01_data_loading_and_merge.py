@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-DATA_DIR = Path("~/Desktop/QSS20-S26/public_data").expanduser()
+DATA_DIR = Path("../data")
 
 VDEM_PATH = DATA_DIR / "V-Dem-CY-Full+Others-v16.csv"
-WB_PATH = DATA_DIR / "healthdata.csv"
-OUT_PATH = DATA_DIR / "merged_panel.csv"
+WB_PATH   = DATA_DIR / "API_SH.XPD.CHEX.PC.CD_DS2_en_csv_v2_645.csv"
+OUT_PATH  = DATA_DIR / "merged_panel.csv"
 
 #this is a helper function to reshape World Bank data from wide format, where years are columns to long format with one country-year per row.
 def reshape_wb_data(wb_raw): 
