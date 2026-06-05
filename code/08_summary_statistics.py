@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
  
 #load merged panel and keep the 2000-2023 window
-DATA_DIR = Path("~/Desktop/QSS20-S26/public_data").expanduser()
+DATA_DIR = Path("../data")
 panel = pd.read_csv(DATA_DIR / "merged_panel.csv")
 panel = panel[(panel["year"] >= 2000) & (panel["year"] <= 2023)].copy()
  
