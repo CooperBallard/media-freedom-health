@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import plotly.graph_objects as go
  
-#paths: adjust these to wherever your files live
-DATA_DIR = os.path.expanduser("~/Desktop/QSS20-S26/public_data")
+#paths
+DATA_DIR = "../data"
 MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
  
 #load merged panel, keep 2000-2023
