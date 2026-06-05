@@ -3,11 +3,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
- 
-#paths: adjust these to wherever your files live
-DATA_DIR = os.path.expanduser("~/Desktop/QSS20-S26/public_data")
+
+#paths
+DATA_DIR = "../data"
 MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
-OUT_DIR  = os.path.expanduser("~/Desktop/QSS20-S26/figures")
+OUT_DIR  = "../docs"
 os.makedirs(OUT_DIR, exist_ok=True)
  
 #shared plot style + palette
