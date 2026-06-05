@@ -17,19 +17,23 @@ Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) 
 
 ## Repository Structure
 
-- `code/` — Python scripts for data processing and analysis
+- `code/` — Python scripts, run in numbered order (described in the Scripts section below)
   - `01_data_loading_and_merge.py`
-  - `02_visualizations.py`
-  - `03_regression_analysis.py`
-  - `04_summary_statistcs.py`
-- `data/` — Data download instructions (raw files too large for GitHub)
-  - `README.md`
-- `output/` — Generated figures
-  - `viz_raw_gap.png`
-  - `viz_regression_dots.png`
-  - `viz_freedom_democracy.png`
-  - `viz_xc_contrast.png`
-  - `democracy_health_map.html`
+  - `02_raw_gap.py`
+  - `03_press_freedom_controls.py`
+  - `04_press_freedom_democracy.py`
+  - `05_full_comparison_plot.py`
+  - `06_interactive_map.py`
+  - `07_regression_analysis.py`
+  - `08_summary_statistics.py`
+- `data/` — Data sources and the analysis-ready panel
+  - `README.md` — sources and download links
+  - `merged_panel.csv` — merged country-year panel (built by script 01, read by the rest)
+  - `summary_statistics.csv` — Table 1 output from script 08
+  - World Bank source file is included; the V-Dem file is too large for GitHub (see `data/README.md`)
+- `docs/` — Generated figures and the interactive site
+  - `viz_raw_gap.png`, `viz_regression_dots.png`, `viz_freedom_democracy.png`, `viz_xc_contrast.png`
+  - `democracy_health_map.html`, `index.html`
 
 ## Scripts
 
