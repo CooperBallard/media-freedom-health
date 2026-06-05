@@ -13,7 +13,7 @@ Countries with freer presses tend to have longer-lived populations: in these dat
 | V-Dem Country-Year v16 | [V-Dem Institute](https://v-dem.net/data/the-v-dem-dataset/) | Freedom of expression / media freedom, electoral democracy (polyarchy), life expectancy, GDP per capita, rule of law, control of corruption |
 | World Development Indicators | [World Bank](https://data.worldbank.org/indicator/SH.XPD.CHEX.PC.CD) | Health expenditure per capita (USD) |
 
-Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) for download instructions.
+The full V-Dem file is too large for GitHub; the World Bank file and the merged panel are included. See [`data/README.md`](data/README.md) for sources and download instructions.
 
 ## Repository Structure
 
@@ -31,21 +31,25 @@ Raw data files are too large for GitHub. See [`data/README.md`](data/README.md) 
   - `merged_panel.csv` — merged country-year panel (built by script 01, read by the rest)
   - `summary_statistics.csv` — Table 1 output from script 08
   - World Bank source file is included; the V-Dem file is too large for GitHub (see `data/README.md`)
-- `docs/` — Generated figures and the interactive site
-  - `viz_raw_gap.png`, `viz_regression_dots.png`, `viz_freedom_democracy.png`, `viz_xc_contrast.png`
-  - `democracy_health_map.html`, `index.html`
+- `output/` — Generated figures and the interactive map
+  - `viz_raw_gap.png`
+  - `viz_regression_dots.png`
+  - `viz_freedom_democracy.png`
+  - `viz_xc_contrast.png`
+  - `democracy_health_map.html`
+- `docs/` — Live project website (GitHub Pages)
 
 ## Scripts
 
 All scripts live in `code/` and read from `../data`. Run them in numbered order from inside the `code/` folder.
 
 1. [`01_data_loading_and_merge.py`](code/01_data_loading_and_merge.py) — Reads the raw V-Dem (`V-Dem-CY-Full+Others-v16.csv`) and World Bank health expenditure (`API_SH.XPD.CHEX.PC.CD_DS2_en_csv_v2_645.csv`) files, reshapes the World Bank data to long form, restricts both to 2000–2023, left-joins them into a country-year panel, recodes zero life-expectancy values as missing, log-transforms GDP and health spending, and prints row counts before and after the merge. Outputs `data/merged_panel.csv`.
-2. [`02_raw_gap.py`](code/02_raw_gap.py) — Reads `merged_panel.csv`. Produces Figure 1, the raw country-level scatter of media freedom against life expectancy showing the roughly eight-year gap before any controls. Outputs `docs/viz_raw_gap.png`.
-3. [`03_press_freedom_controls.py`](code/03_press_freedom_controls.py) — Reads `merged_panel.csv`. Runs the progressive-controls regressions for media freedom (alone, then adding GDP, health spending, and rule of law plus civil society repression) with year fixed effects and standard errors clustered by country, and plots the shrinking coefficient. Produces Figure 2. Outputs `docs/viz_regression_dots.png`.
-4. [`04_press_freedom_democracy.py`](code/04_press_freedom_democracy.py) — Reads `merged_panel.csv`. Produces Figure 3, the country-level scatter of media freedom against electoral democracy (r ≈ 0.90), showing the two are nearly collinear. Outputs `docs/viz_freedom_democracy.png`.
-5. [`05_full_comparison_plot.py`](code/05_full_comparison_plot.py) — Reads `merged_panel.csv`. Estimates the cross-country contrast models (press freedom with wealth; democracy with wealth; democracy with wealth, rule of law, and control of corruption), clustered by country, and plots them side by side. Produces Figure 4. Outputs `docs/viz_xc_contrast.png`.
-6. [`06_interactive_map.py`](code/06_interactive_map.py) — Reads `merged_panel.csv`. Builds an interactive Plotly choropleth of the 2023 snapshot with a dropdown to toggle between free expression, life expectancy, media censorship, and civil society freedom. Outputs `docs/democracy_health_map.html`.
-7. [`07_regression_analysis.py`](code/07_regression_analysis.py) — Reads `merged_panel.csv`. Runs and prints the full set of cross-country regressions behind the paper: the media-freedom progressive-controls sequence and the democracy specifications (alone, plus wealth, plus rule of law and corruption), with year fixed effects and standard errors clustered by country. Prints coefficients, p-values, and sample sizes. No file output; the numbers are reported in the paper.
+2. [`02_raw_gap.py`](code/02_raw_gap.py) — Reads `merged_panel.csv`. Produces Figure 1, the raw country-level scatter of media freedom against life expectancy showing the roughly eight-year gap before any controls. Outputs `output/viz_raw_gap.png`.
+3. [`03_press_freedom_controls.py`](code/03_press_freedom_controls.py) — Reads `merged_panel.csv`. Runs the progressive-controls regressions for media freedom (alone, then adding GDP, health spending, and rule of law plus civil society repression) with year fixed effects and standard errors clustered by country, and plots the shrinking coefficient. Produces Figure 2. Outputs `output/viz_regression_dots.png`.
+4. [`04_press_freedom_democracy.py`](code/04_press_freedom_democracy.py) — Reads `merged_panel.csv`. Produces Figure 3, the country-level scatter of media freedom against electoral democracy (r ≈ 0.90), showing the two are nearly collinear. Outputs `output/viz_freedom_democracy.png`.
+5. [`05_full_comparison_plot.py`](code/05_full_comparison_plot.py) — Reads `merged_panel.csv`. Estimates the cross-country contrast models (press freedom with wealth; democracy with wealth; democracy with wealth, rule of law, and control of corruption), clustered by country, and plots them side by side. Produces Figure 4. Outputs `output/viz_xc_contrast.png`.
+6. [`06_interactive_map.py`](code/06_interactive_map.py) — Reads `merged_panel.csv`. Builds an interactive Plotly choropleth of the 2023 snapshot with a dropdown to toggle between free expression, life expectancy, media censorship, and civil society freedom. Outputs `output/democracy_health_map.html`.
+7. [`07_regression_analysis.py`](code/07_regression_analysis.py) — Reads `merged_panel.csv`. Runs and prints the regressions behind the paper: the cross-country media-freedom progressive-controls sequence, the cross-country democracy specifications (alone, plus wealth, plus rule of law and corruption), and the within-country two-way fixed-effects models with lagged democracy reported as a sensitivity check. Cross-country models use year fixed effects with standard errors clustered by country. Prints coefficients, p-values, and sample sizes. No file output; the numbers are reported in the paper.
 8. [`08_summary_statistics.py`](code/08_summary_statistics.py) — Reads `merged_panel.csv`. Builds Table 1 (N, mean, standard deviation, min, and max for the key variables) and prints panel coverage diagnostics (row and country counts, year span, and health-spending coverage). Outputs `data/summary_statistics.csv`.
 
 ## Findings
