@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
  
-#full path to your merged_panel.csv (it lives in public_data, not data)
-PANEL = "/Users/cooperballard/Desktop/QSS20-S26/public_data/merged_panel.csv"
+# path to merged_panel.csv
+PANEL = "../data/merged_panel.csv"
  
 #load merged panel from the merging script (script 01)
 panel = pd.read_csv(PANEL)
