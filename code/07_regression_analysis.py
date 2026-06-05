@@ -62,3 +62,17 @@ p3d = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy", "log_gdppc", "e_wbgi_r
 p3 = smf.ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + e_wbgi_rle + e_wbgi_cce + C(year)", data=p3d).fit(
     cov_type="cluster", cov_kwds={"groups": p3d["country_text_id"]})
 print(f"+ rule of law & corruption:    coef={p3.params['v2x_polyarchy']:.3f}, p={p3.pvalues['v2x_polyarchy']:.4f}, n={int(p3.nobs)}")
+
+#within-country sensitivity: two-way fixed effects (country + year) with lagged democracy
+#log GDP control caps the sample at 2019 because e_gdppc ends in 2019
+panel = panel.sort_values(["country_text_id", "year"]).copy()
+
+print("\nWithin-country two-way FE (country + year), clustered by country, with log GDP control")
+for k in [0, 1, 3, 5]:
+    col = f"pol_lag{k}"
+    panel[col] = panel.groupby("country_text_id")["v2x_polyarchy"].shift(k)
+    d = panel.dropna(subset=["e_pelifeex", col, "log_gdppc"]).copy()
+    m = smf.ols(f"e_pelifeex ~ {col} + log_gdppc + C(country_text_id) + C(year)", data=d).fit(
+        cov_type="cluster", cov_kwds={"groups": d["country_text_id"]})
+    print(f"Democracy lag {k}: coef={m.params[col]:.3f}, p={m.pvalues[col]:.4f}, "
+          f"n={int(m.nobs)}, years={int(d['year'].min())}-{int(d['year'].max())}")
