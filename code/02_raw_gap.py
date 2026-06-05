@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #paths
 DATA_DIR = "../data"
 MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
-OUT_DIR  = "../docs"
+OUT_DIR  = "../output"
 os.makedirs(OUT_DIR, exist_ok=True)
  
 #shared plot style + palette
