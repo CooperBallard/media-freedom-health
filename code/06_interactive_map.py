@@ -50,5 +50,5 @@ fig.update_layout(
     margin=dict(t=120, b=10, l=10, r=10))
  
 os.makedirs("../docs", exist_ok=True)
-fig.write_html("../docs/democracy_health_map.html")
+fig.write_html("../output/democracy_health_map.html")
 print("saved ../docs/democracy_health_map.html")
