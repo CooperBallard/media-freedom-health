@@ -1,0 +1,11 @@
+Variable,N,Mean,SD,Min,Max
+Life expectancy (years),"4,185",70.53,8.64,32.52,85.37
+Media freedom (0-1),"4,278",0.66,0.28,0.01,0.99
+Democracy (0-1),"4,278",0.51,0.26,0.01,0.92
+Media censorship score,"4,278",0.61,1.56,-3.07,3.49
+Journalist harassment score,"4,278",0.64,1.38,-3.32,4.13
+Civil society repression score,"4,278",0.93,1.49,-3.72,3.34
+Health spending per capita (USD),"4,046",944.16,1708.66,4.18,13473.19
+GDP per capita (thousands USD),"3,469",34.02,36.38,1.15,220.78
+Rule of law score,"3,923",-0.16,0.98,-2.35,2.11
+Control of corruption score,"3,923",-0.12,1.0,-1.89,2.4
