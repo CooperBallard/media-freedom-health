@@ -76,3 +76,14 @@ for k in [0, 1, 3, 5]:
         cov_type="cluster", cov_kwds={"groups": d["country_text_id"]})
     print(f"Democracy lag {k}: coef={m.params[col]:.3f}, p={m.pvalues[col]:.4f}, "
           f"n={int(m.nobs)}, years={int(d['year'].min())}-{int(d['year'].max())}")
+
+#within-country press freedom (v2x_freexp_altinf), same spec as the democracy loop above
+print("\nWithin-country two-way FE (country + year), clustered by country, press freedom, with log GDP control")
+for k in [0, 1, 3, 5]:
+    col = f"mf_lag{k}"
+    panel[col] = panel.groupby("country_text_id")["v2x_freexp_altinf"].shift(k)
+    d = panel.dropna(subset=["e_pelifeex", col, "log_gdppc"]).copy()
+    m = smf.ols(f"e_pelifeex ~ {col} + log_gdppc + C(country_text_id) + C(year)", data=d).fit(
+        cov_type="cluster", cov_kwds={"groups": d["country_text_id"]})
+    print(f"Press freedom lag {k}: coef={m.params[col]:.3f}, p={m.pvalues[col]:.4f}, "
+          f"n={int(m.nobs)}, years={int(d['year'].min())}-{int(d['year'].max())}")
