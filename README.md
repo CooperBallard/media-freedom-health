@@ -1,6 +1,6 @@
 # Media Freedom and Population Health
 
-**QSS 20 Final Project — Cooper Ballard, Dartmouth College**
+**QSS 20 Final Project: Cooper Ballard, Dartmouth College**
 
 **Live site:** https://cooperballard.github.io/media-freedom-health/
 
