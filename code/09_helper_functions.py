@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
  
-#shared paths (scripts run from inside the code/ folder)
+#shared paths
 DATA_DIR = "../data"
 OUT_DIR  = "../output"
 MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
