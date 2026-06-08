@@ -28,6 +28,7 @@ The full V-Dem file is too large for GitHub; the World Bank file and the merged 
   - `06_interactive_map.py`
   - `07_regression_analysis.py`
   - `08_summary_statistics.py`
+  - `helpers.py` (shared functions imported by scripts 02–07 that are not run directly)
 - `data/` — Data sources and the analysis-ready panel
   - `README.md` — sources and download links
   - `merged_panel.csv` — merged country-year panel (built by script 01, read by the rest)
@@ -54,6 +55,7 @@ All scripts live in `code/` and read from `../data`. Run them in numbered order 
 6. [`06_interactive_map.py`](code/06_interactive_map.py) — Reads `merged_panel.csv`. Builds an interactive Plotly choropleth of the 2023 snapshot with a dropdown to toggle between free expression, life expectancy, media censorship, and civil society freedom. Outputs `output/democracy_health_map.html`.
 7. [`07_regression_analysis.py`](code/07_regression_analysis.py) — Reads `merged_panel.csv`. Runs and prints the regressions behind the paper: the cross-country media-freedom progressive-controls sequence, the cross-country democracy specifications (alone, plus wealth, plus rule of law and corruption), and the within-country two-way fixed-effects models with lagged democracy reported as a sensitivity check. Cross-country models use year fixed effects with standard errors clustered by country. Prints coefficients, p-values, and sample sizes. No file output; the numbers are reported in the paper.
 8. [`08_summary_statistics.py`](code/08_summary_statistics.py) — Reads `merged_panel.csv`. Builds Table 1 (N, mean, standard deviation, min, and max for the key variables) and prints panel coverage diagnostics (row and country counts, year span, and health-spending coverage). Outputs `data/summary_statistics.csv`.
+9. [`helpers.py `](code/helpers.py) - It holds the functions that the other scripts have in common, so the same setup does not have to be repeated in each file. set_plot_style applies the shared matplotlib styling. ensure_output_dir creates the output/ folder if it does not already exist. load_panel reads  `merged_panel.csv`, restricts it to the 2000–2023 window, recodes zero life-expectancy values as missing, and adds the log GDP and log health-spending columns if they are not already present. cluster_ols runs an OLS regression with year fixed effects and standard errors clustered by country. get_coef_info returns the coefficient, confidence interval, and p-value for a given variable from a fitted model. The module reads `merged_panel.csv` only through load_panel, and it does not write any files.
 
 ## Findings
 
