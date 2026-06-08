@@ -49,7 +49,7 @@ VDEM_COLS = [
 
 vdem = vdem_raw[VDEM_COLS].copy()
 
-# Restrict to final project analysis window: 2000–2023
+#restrict to final project analysis window: 2000–2023
 vdem = vdem[(vdem["year"] >= 2000) & (vdem["year"] <= 2023)].copy()
 
 print("\nV-Dem after year filter")
