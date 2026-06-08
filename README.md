@@ -29,19 +29,19 @@ The full V-Dem file is too large for GitHub; the World Bank file and the merged 
   - `07_regression_analysis.py`
   - `08_summary_statistics.py`
   - `helpers.py` (shared functions imported by several scripts; not run directly)
-- `data/` — Data sources and the analysis-ready panel
-  - `README.md` — sources and download links
-  - `merged_panel.csv` — merged country-year panel (built by script 01, read by the rest)
-  - `summary_statistics.csv` — Table 1 output from script 08
+- `data/`: Data sources and the analysis-ready panel
+  - `README.md`: sources and download links
+  - `merged_panel.csv`: merged country-year panel (built by script 01, read by the rest)
+  - `summary_statistics.csv`: Table 1 output from script 08
   - World Bank source file is included; the V-Dem file is too large for GitHub (see `data/README.md`)
-- `output/` — Generated figures and the interactive map
+- `output/`: Generated figures and the interactive map
   - `viz_raw_gap.png`
   - `viz_regression_dots.png`
   - `viz_freedom_democracy.png`
   - `viz_xc_contrast.png`
   - `democracy_health_map.html`
-- `docs/` — Live project website (GitHub Pages): https://cooperballard.github.io/media-freedom-health/
-- `Transcript.md` — full AI assistant transcript (the Agentic Analysis reflection is in the paper)
+- `docs/`: Live project website (GitHub Pages): https://cooperballard.github.io/media-freedom-health/
+- `Transcript.md`: full AI assistant transcript (the Agentic Analysis reflection is in the paper)
 
 ## Scripts
 
