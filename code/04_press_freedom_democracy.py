@@ -3,20 +3,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helpers import (set_plot_style, ensure_output_dir, load_panel,
                      OUT_DIR, BLUE, DBLUE, DARK, FOOT)
- 
+
 set_plot_style()
 ensure_output_dir()
 panel = load_panel()
- 
- 
+
+
 #figure 3: press freedom vs democracy (nearly collinear, r ~ 0.90)
+#collapse to one point per country (averages over the panel), drop countries missing either measure
 clv = (panel.groupby("country_text_id")
             .agg(mf=("v2x_freexp_altinf", "mean"), pol=("v2x_polyarchy", "mean"))
             .dropna())
+#country-level r is what the figure reports; country-year r printed alongside for reference
 r = clv["mf"].corr(clv["pol"])
 print(f"[viz 3] n={len(clv)}  country-level r={r:.3f}  "
       f"(country-year r={panel['v2x_freexp_altinf'].corr(panel['v2x_polyarchy']):.3f})")
- 
+
 fig, ax = plt.subplots(figsize=(8.6, 7.6), dpi=150)
 ax.scatter(clv["mf"], clv["pol"], s=42, color=BLUE, alpha=0.6,
            edgecolor="white", linewidth=0.5, zorder=3)
@@ -31,7 +33,7 @@ ax.set_xlabel("Media freedom  (freedom of expression index, 0\u20131)", fontsize
 ax.set_ylabel("Democracy  (electoral democracy index, 0\u20131)", fontsize=12.5, color=DARK)
 ax.set_xlim(-0.02, 1.02)
 ax.set_ylim(-0.02, 1.02)
-ax.set_aspect("equal", adjustable="box")
+ax.set_aspect("equal", adjustable="box")   #equal aspect so the near 1:1 spread is not distorted
 ax.spines[["top", "right"]].set_visible(False)
 ax.tick_params(labelsize=11)
 ax.grid(color="#ECECEC", lw=0.8, zorder=0)
