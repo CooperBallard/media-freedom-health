@@ -1,28 +1,12 @@
 import os
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
-
-#paths
-DATA_DIR = "../data"
-MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
-OUT_DIR  = "../output"
-os.makedirs(OUT_DIR, exist_ok=True)
+from helpers import (set_plot_style, ensure_output_dir, load_panel,
+                     OUT_DIR, BLUE, DBLUE, DARK, FOOT)
  
-#shared plot style + palette
-plt.rcParams.update({
-    "figure.facecolor": "white", "axes.facecolor": "white",
-    "savefig.facecolor": "white", "font.family": "DejaVu Sans",
-    "axes.edgecolor": "#444444", "axes.linewidth": 1.0,
-})
-BLUE, DBLUE, GRAY = "#2E6FE0", "#1B4FB0", "#9AA0A6"
-DARK, FOOT        = "#222222", "#777777"
- 
-#load merged panel, keep 2000-2023, recode life expectancy of 0 to missing
-panel = pd.read_csv(MERGED)
-panel = panel[(panel["year"] >= 2000) & (panel["year"] <= 2023)].copy()
-panel.loc[panel["e_pelifeex"] == 0, "e_pelifeex"] = np.nan
+set_plot_style()
+ensure_output_dir()
+panel = load_panel()
  
  
 #figure 3: press freedom vs democracy (nearly collinear, r ~ 0.90)
