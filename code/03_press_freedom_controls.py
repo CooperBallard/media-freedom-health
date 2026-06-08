@@ -54,8 +54,10 @@ for y, (_, row) in zip(y_pos, results.iterrows()):
             markeredgecolor="white", markeredgewidth=2, zorder=3)
     if row["pval"] < 0.01:
         p_text = "p<0.01"
+    elif row["pval"] < 0.05:
+        p_text = f"p = {row['pval']:.2f}"
     elif row["pval"] < 0.10:
-        p_text = "p = 0.09, n.s."
+        p_text = f"p = {row['pval']:.2f}, n.s."
     else:
         p_text = "not sig."
     ax.text(13.0, y, f"{row['coef']:.1f} yrs ({p_text})", va="center", fontsize=12,
