@@ -1,42 +1,12 @@
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
-
-#paths
-DATA_DIR = "../data"
-MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
-OUT_DIR  = "../output"
-os.makedirs(OUT_DIR, exist_ok=True)
+from helpers import (set_plot_style, ensure_output_dir, load_panel,
+                     cluster_ols, get_coef_info, OUT_DIR)
  
-#shared plot style + palette
-plt.rcParams.update({
-    "figure.facecolor": "white", "axes.facecolor": "white",
-    "savefig.facecolor": "white", "font.family": "DejaVu Sans",
-    "axes.edgecolor": "#444444", "axes.linewidth": 1.0,
-})
-BLUE, DBLUE, GRAY = "#2E6FE0", "#1B4FB0", "#9AA0A6"
-DARK, FOOT        = "#222222", "#777777"
- 
-#load merged panel, keep 2000-2023, recode life expectancy of 0 to missing
-panel = pd.read_csv(MERGED)
-panel = panel[(panel["year"] >= 2000) & (panel["year"] <= 2023)].copy()
-panel.loc[panel["e_pelifeex"] == 0, "e_pelifeex"] = np.nan
- 
-#create logs if the merge didn't already include them
-if "log_gdppc" not in panel.columns:
-    panel["log_gdppc"] = np.where(panel["e_gdppc"] > 0, np.log(panel["e_gdppc"]), np.nan)
-if "log_health_exp" not in panel.columns:
-    panel["log_health_exp"] = np.where(
-        panel["health_exp_pc_usd"] > 0, np.log(panel["health_exp_pc_usd"]), np.nan)
- 
-def get_coef_info(model, var_name):
-    #extract coefficient, confidence interval, and p-value for a variable
-    coef = model.params[var_name]
-    ci_low, ci_high = model.conf_int().loc[var_name]
-    pval = model.pvalues[var_name]
-    return coef, ci_low, ci_high, pval
+set_plot_style()
+ensure_output_dir()
+panel = load_panel()
  
  
 #figure 2: progressive-controls dot plot for press freedom
@@ -45,27 +15,23 @@ models = []
  
 #model 1: media freedom alone
 d1 = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf"]).copy()
-m1 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + C(year)", data=d1).fit(
-    cov_type="cluster", cov_kwds={"groups": d1["country_text_id"]})
+m1 = cluster_ols("e_pelifeex ~ v2x_freexp_altinf + C(year)", d1)
 models.append(("Media freedom alone", m1, d1))
  
 #model 2: + GDP per capita
 d2 = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc"]).copy()
-m2 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + C(year)", data=d2).fit(
-    cov_type="cluster", cov_kwds={"groups": d2["country_text_id"]})
+m2 = cluster_ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + C(year)", d2)
 models.append(("+ GDP per capita", m2, d2))
  
 #model 3: + health spending
 d3 = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc", "log_health_exp"]).copy()
-m3 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + log_health_exp + C(year)", data=d3).fit(
-    cov_type="cluster", cov_kwds={"groups": d3["country_text_id"]})
+m3 = cluster_ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + log_health_exp + C(year)", d3)
 models.append(("+ health spending", m3, d3))
  
 #model 4: + rule of law and civil society repression (v2csreprss; interpret its sign carefully)
 d4 = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc",
                           "log_health_exp", "e_wbgi_rle", "v2csreprss"]).copy()
-m4 = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + log_health_exp + e_wbgi_rle + v2csreprss + C(year)",
-             data=d4).fit(cov_type="cluster", cov_kwds={"groups": d4["country_text_id"]})
+m4 = cluster_ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + log_health_exp + e_wbgi_rle + v2csreprss + C(year)", d4)
 models.append(("+ rule of law & civil society", m4, d4))
  
 #collect the media-freedom estimate from each model
