@@ -1,50 +1,25 @@
+
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
-
-#paths
-DATA_DIR = "../data"
-MERGED   = os.path.join(DATA_DIR, "merged_panel.csv")
-OUT_DIR  = "../output"
-os.makedirs(OUT_DIR, exist_ok=True)
+from helpers import (set_plot_style, ensure_output_dir, load_panel,
+                     cluster_ols, OUT_DIR)
  
-#shared plot style + palette
-plt.rcParams.update({
-    "figure.facecolor": "white", "axes.facecolor": "white",
-    "savefig.facecolor": "white", "font.family": "DejaVu Sans",
-    "axes.edgecolor": "#444444", "axes.linewidth": 1.0,
-})
-BLUE, DBLUE, GRAY = "#2E6FE0", "#1B4FB0", "#9AA0A6"
-DARK, FOOT        = "#222222", "#777777"
- 
-#load merged panel, keep 2000-2023, recode life expectancy of 0 to missing
-panel = pd.read_csv(MERGED)
-panel = panel[(panel["year"] >= 2000) & (panel["year"] <= 2023)].copy()
-panel.loc[panel["e_pelifeex"] == 0, "e_pelifeex"] = np.nan
- 
-#create logs if the merge didn't already include them
-if "log_gdppc" not in panel.columns:
-    panel["log_gdppc"] = np.where(panel["e_gdppc"] > 0, np.log(panel["e_gdppc"]), np.nan)
-if "log_health_exp" not in panel.columns:
-    panel["log_health_exp"] = np.where(
-        panel["health_exp_pc_usd"] > 0, np.log(panel["health_exp_pc_usd"]), np.nan)
+set_plot_style()
+ensure_output_dir()
+panel = load_panel()
  
  
 #figure 4: forest plot, press freedom vs democracy contrast
 #all models: OLS, year fixed effects via C(year), SEs clustered by country
 d_pf = panel.dropna(subset=["e_pelifeex", "v2x_freexp_altinf", "log_gdppc"]).copy()
-m_pf = smf.ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + C(year)", data=d_pf).fit(
-    cov_type="cluster", cov_kwds={"groups": d_pf["country_text_id"]})
+m_pf = cluster_ols("e_pelifeex ~ v2x_freexp_altinf + log_gdppc + C(year)", d_pf)
  
 d_dem_wealth = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy", "log_gdppc"]).copy()
-m_dem_wealth = smf.ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + C(year)", data=d_dem_wealth).fit(
-    cov_type="cluster", cov_kwds={"groups": d_dem_wealth["country_text_id"]})
+m_dem_wealth = cluster_ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + C(year)", d_dem_wealth)
  
 d_dem_full = panel.dropna(subset=["e_pelifeex", "v2x_polyarchy", "log_gdppc", "e_wbgi_rle", "e_wbgi_cce"]).copy()
-m_dem_full = smf.ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + e_wbgi_rle + e_wbgi_cce + C(year)",
-                     data=d_dem_full).fit(cov_type="cluster", cov_kwds={"groups": d_dem_full["country_text_id"]})
+m_dem_full = cluster_ols("e_pelifeex ~ v2x_polyarchy + log_gdppc + e_wbgi_rle + e_wbgi_cce + C(year)", d_dem_full)
  
 def coef_row(model, var, label):
     ci_low, ci_high = model.conf_int().loc[var]
